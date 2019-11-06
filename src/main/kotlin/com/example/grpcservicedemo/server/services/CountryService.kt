@@ -19,11 +19,11 @@ class CountryService : CountryServiceGrpc.CountryServiceImplBase() {
     }
 
     override fun getCountries(request: Country.CountryRequest?, responseObserver: StreamObserver<Country.CountriesResponse>?) {
-        val ids = request?.idList
-        val responseBuilder = Country.CountriesResponse.newBuilder()
+//        val ids = request?.idList
+//        val responseBuilder = Country.CountriesResponse.newBuilder()
+//        ids?.forEach { responseBuilder.addCountry(COUNTRIES[it]) }
 
-        ids?.forEach { responseBuilder.addCountry(COUNTRIES[it]) }
-
+        val responseBuilder = Country.CountriesResponse.newBuilder().addAllCountry(COUNTRIES.values)
         responseObserver?.onNext(responseBuilder.build())
         responseObserver?.onCompleted()
     }

@@ -13,6 +13,11 @@ class AnimalService : AnimalServiceGrpc.AnimalServiceImplBase() {
                         .setName("Pulpo")
                         .setColor("pink")
                         .addAllCountry(listOf("A", "F"))
+                        .build(),
+                AnimalOuterClass.Animal.newBuilder()
+                        .setName("Pölpö")
+                        .setColor("pänk")
+                        .addAllCountry(listOf("B", "C"))
                         .build()
         )
     }
@@ -21,7 +26,7 @@ class AnimalService : AnimalServiceGrpc.AnimalServiceImplBase() {
         val responseBuilder = AnimalOuterClass.AnimalsResponse.newBuilder()
 
         val animalId = request?.id
-        if (animalId == null) {
+        if (animalId == null || animalId == "") {
             responseBuilder.addAllAnimal(ANIMALS)
         } else {
             responseBuilder.addAnimal(ANIMALS[Integer.parseInt(animalId)])

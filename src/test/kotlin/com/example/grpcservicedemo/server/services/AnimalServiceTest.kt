@@ -15,11 +15,26 @@ class AnimalServiceTest {
     lateinit var gRpcServerProperties: GRpcServerProperties
 
     @Test
-    fun testSomething() {
-        val channel = ManagedChannelBuilder.forAddress("localhost", gRpcServerProperties.runningPort).usePlaintext().build()
+    fun returnsAllAnimals_whenNoIdSet() {
+        val channel = ManagedChannelBuilder
+                .forAddress("localhost", gRpcServerProperties.runningPort)
+                .usePlaintext()
+                .build()
         val animalStub = AnimalServiceGrpc.newFutureStub(channel)
         val request = AnimalOuterClass.AnimalRequest.newBuilder().build()
         val response = animalStub.getAnimals(request).get().animalList
         Assertions.assertThat(response.size).isEqualTo(2)
+    }
+
+    @Test
+    fun returnsSpecificAnimal_whenIdIsGivven() {
+        val channel = ManagedChannelBuilder
+                .forAddress("localhost", gRpcServerProperties.runningPort)
+                .usePlaintext()
+                .build()
+        val animalStub = AnimalServiceGrpc.newFutureStub(channel)
+        val request = AnimalOuterClass.AnimalRequest.newBuilder().setId("0").build()
+        val response = animalStub.getAnimals(request).get().animalList
+        Assertions.assertThat(response.size).isEqualTo(1)
     }
 }

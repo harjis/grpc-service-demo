@@ -15,7 +15,7 @@ class CountryServiceTest {
     lateinit var gRpcServerProperties: GRpcServerProperties
 
     @Test
-    fun getsCountries(){
+    fun getsCountries() {
         val channel = ManagedChannelBuilder
                 .forAddress("localhost", gRpcServerProperties.runningPort)
                 .usePlaintext()

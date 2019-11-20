@@ -1,6 +1,6 @@
 package com.example.grpcservicedemo.server.services
 
-import com.example.grpcservicedemo.grpc.Country
+import com.example.grpcservicedemo.grpc.CountryOuterClass
 import com.example.grpcservicedemo.grpc.CountryServiceGrpc
 import io.grpc.ManagedChannelBuilder
 import org.assertj.core.api.Assertions
@@ -21,11 +21,8 @@ class CountryServiceTest {
                 .usePlaintext()
                 .build()
         val countryStub = CountryServiceGrpc.newBlockingStub(channel)
-        val request = Country.CountryRequest
-                .newBuilder()
-                .addId("A")
-                .build()
+        val request = CountryOuterClass.CountryRequest.newBuilder().build()
         val response = countryStub.getCountries(request).countryList
-        Assertions.assertThat(response.size).isEqualTo(1)
+        Assertions.assertThat(response.size).isEqualTo(5)
     }
 }

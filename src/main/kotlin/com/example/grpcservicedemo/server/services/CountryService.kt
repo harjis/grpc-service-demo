@@ -1,27 +1,31 @@
 package com.example.grpcservicedemo.server.services
 
-import com.example.grpcservicedemo.grpc.Country
+import com.example.grpcservicedemo.grpc.CountryOuterClass
 import com.example.grpcservicedemo.grpc.CountryServiceGrpc
+import com.example.grpcservicedemo.server.CountryRepository
 import io.grpc.stub.StreamObserver
 import org.lognet.springboot.grpc.GRpcService
+import org.springframework.transaction.annotation.Transactional
 
 @GRpcService
-class CountryService : CountryServiceGrpc.CountryServiceImplBase() {
-    companion object {
-        val COUNTRIES = mapOf(
-                Pair("A", "Austria"),
-                Pair("B", "Brasil"),
-                Pair("C", "Chile"),
-                Pair("D", "Danmakr"),
-                Pair("E", "Estonia"),
-                Pair("F", "Finlanddi")
-        )
-    }
+@Transactional
+class CountryService(
+        private val countryRepository: CountryRepository
+) : CountryServiceGrpc.CountryServiceImplBase() {
 
-    override fun getCountries(request: Country.CountryRequest?, responseObserver: StreamObserver<Country.CountriesResponse>?) {
-        val ids = request?.idList
-        val responseBuilder = Country.CountriesResponse.newBuilder()
-        ids?.forEach { responseBuilder.addCountry(COUNTRIES[it]) }
+    override fun getCountries(
+            request: CountryOuterClass.CountryRequest?,
+            responseObserver: StreamObserver<CountryOuterClass.CountriesResponse>?
+    ) {
+        val responseBuilder = CountryOuterClass.CountriesResponse.newBuilder()
+        responseBuilder.addAllCountry(countryRepository.findAll().map {
+            CountryOuterClass.Country
+                    .newBuilder()
+                    .setId(it.id!!)
+                    .setIdentifier(it.identifier)
+                    .setName(it.name)
+                    .build()
+        })
 
         responseObserver?.onNext(responseBuilder.build())
         responseObserver?.onCompleted()

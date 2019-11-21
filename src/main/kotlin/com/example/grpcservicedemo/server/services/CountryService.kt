@@ -27,6 +27,8 @@ class CountryService(
                     .build()
         })
 
+        println("Serving getCountries with: ${responseBuilder.build().countryList.map { it.name }}")
+
         responseObserver?.onNext(responseBuilder.build())
         responseObserver?.onCompleted()
     }

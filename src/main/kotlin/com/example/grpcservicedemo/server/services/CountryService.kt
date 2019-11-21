@@ -2,7 +2,7 @@ package com.example.grpcservicedemo.server.services
 
 import com.example.grpcservicedemo.grpc.CountryOuterClass
 import com.example.grpcservicedemo.grpc.CountryServiceGrpc
-import com.example.grpcservicedemo.server.CountryRepository
+import com.example.grpcservicedemo.server.repositories.CountryRepository
 import io.grpc.stub.StreamObserver
 import org.lognet.springboot.grpc.GRpcService
 import org.springframework.transaction.annotation.Transactional

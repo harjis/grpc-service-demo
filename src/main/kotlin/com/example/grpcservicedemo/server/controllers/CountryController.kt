@@ -1,6 +1,6 @@
 package com.example.grpcservicedemo.server.controllers
 
-import com.example.grpcservicedemo.server.CountryRepository
+import com.example.grpcservicedemo.server.repositories.CountryRepository
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

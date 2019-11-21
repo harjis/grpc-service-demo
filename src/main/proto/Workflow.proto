@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option java_package = "com.example.grpcservicedemo.grpc";
+
+service WorkflowService {
+    // Retrieve requested countries by ID
+    rpc getWorkflows(WorkflowRequest) returns (WorkflowResponse) {}
+}
+
+message WorkflowRequest {
+}
+
+// The response message containing countries
+message WorkflowResponse {
+    repeated Workflow workflow = 1;
+}
+
+message Workflow {
+    uint64 viewId = 1;
+    string folder = 2;
+    string name = 3;
+}
+

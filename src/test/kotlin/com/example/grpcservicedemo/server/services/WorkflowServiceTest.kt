@@ -26,4 +26,17 @@ class WorkflowServiceTest {
 
         Assertions.assertThat(response.size).isEqualTo(5)
     }
+
+    @Test
+    fun getsWorkflowsAsync() {
+        val channel = ManagedChannelBuilder
+                .forAddress("localhost", gRpcServerProperties.runningPort)
+                .usePlaintext()
+                .build()
+        val stub = WorkflowServiceGrpc.newFutureStub(channel)
+        val request = WorkflowOuterClass.WorkflowRequest.newBuilder().build()
+        val response = stub.getWorkflows(request).get().workflowList
+
+        Assertions.assertThat(response.size).isEqualTo(5)
+    }
 }

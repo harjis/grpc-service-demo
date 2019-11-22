@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional
 class WorkflowService(
         private val workflowRepository: WorkflowRepository
 ) : WorkflowServiceGrpc.WorkflowServiceImplBase() {
-    override fun getWorkflows(request: WorkflowOuterClass.WorkflowRequest?, responseObserver: StreamObserver<WorkflowOuterClass.WorkflowResponse>?) {
-        val responseBuilder = WorkflowOuterClass.WorkflowResponse.newBuilder()
+    override fun getWorkflows(request: WorkflowOuterClass.WorkflowsRequest?, responseObserver: StreamObserver<WorkflowOuterClass.WorkflowsResponse>?) {
+        val responseBuilder = WorkflowOuterClass.WorkflowsResponse.newBuilder()
         responseBuilder.addAllWorkflow(workflowRepository.findAll().map { workflow ->
             WorkflowOuterClass.Workflow
                     .newBuilder()

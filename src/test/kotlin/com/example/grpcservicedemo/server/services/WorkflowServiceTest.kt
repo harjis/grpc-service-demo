@@ -21,7 +21,7 @@ class WorkflowServiceTest {
                 .usePlaintext()
                 .build()
         val stub = WorkflowServiceGrpc.newBlockingStub(channel)
-        val request = WorkflowOuterClass.WorkflowRequest.newBuilder().build()
+        val request = WorkflowOuterClass.WorkflowsRequest.newBuilder().build()
         val response = stub.getWorkflows(request).workflowList
 
         Assertions.assertThat(response.size).isEqualTo(5)
@@ -34,7 +34,7 @@ class WorkflowServiceTest {
                 .usePlaintext()
                 .build()
         val stub = WorkflowServiceGrpc.newFutureStub(channel)
-        val request = WorkflowOuterClass.WorkflowRequest.newBuilder().build()
+        val request = WorkflowOuterClass.WorkflowsRequest.newBuilder().build()
         val response = stub.getWorkflows(request).get().workflowList
 
         Assertions.assertThat(response.size).isEqualTo(5)

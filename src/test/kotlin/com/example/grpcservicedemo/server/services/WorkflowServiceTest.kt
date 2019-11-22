@@ -2,6 +2,7 @@ package com.example.grpcservicedemo.server.services
 
 import com.example.grpcservicedemo.grpc.WorkflowOuterClass
 import com.example.grpcservicedemo.grpc.WorkflowServiceGrpc
+import com.example.grpcservicedemo.server.repositories.WorkflowRepository
 import io.grpc.ManagedChannelBuilder
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -11,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class WorkflowServiceTest {
+    @Autowired
+    lateinit var workflowRepository: WorkflowRepository
     @Autowired
     lateinit var gRpcServerProperties: GRpcServerProperties
 
@@ -36,7 +39,13 @@ class WorkflowServiceTest {
         val stub = WorkflowServiceGrpc.newFutureStub(channel)
         val request = WorkflowOuterClass.WorkflowsRequest.newBuilder().build()
         val response = stub.getWorkflows(request).get().workflowList
+        val firstWorkflow = response.first()
+        val firstWorkflowDB = workflowRepository.findAll().first()
 
         Assertions.assertThat(response.size).isEqualTo(5)
+        Assertions.assertThat(firstWorkflow.id).isEqualTo(firstWorkflowDB.id)
+        Assertions.assertThat(firstWorkflow.viewId).isEqualTo(firstWorkflowDB.viewId)
+        Assertions.assertThat(firstWorkflow.folder).isEqualTo(firstWorkflowDB.folder)
+        Assertions.assertThat(firstWorkflow.name).isEqualTo(firstWorkflowDB.name)
     }
 }

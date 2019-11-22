@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 class WorkflowService(
         private val workflowRepository: WorkflowRepository
 ) : WorkflowServiceGrpc.WorkflowServiceImplBase() {
-    override fun getWorkflows(request: WorkflowOuterClass.WorkflowsRequest?, responseObserver: StreamObserver<WorkflowOuterClass.WorkflowsResponse>?) {
+    override fun getWorkflows(request: WorkflowOuterClass.WorkflowsRequest?, responseObserver: StreamObserver<WorkflowOuterClass.WorkflowsResponse>) {
         val responseBuilder = WorkflowOuterClass.WorkflowsResponse.newBuilder()
         responseBuilder.addAllWorkflow(workflowRepository.findAll().map { workflow ->
             // TODO I don't get why I need .let here
@@ -28,17 +28,25 @@ class WorkflowService(
         })
 
         println("Serving getWorkflows with: ${responseBuilder.build().workflowList.map { it.name }}")
-        responseObserver?.onNext(responseBuilder.build())
-        responseObserver?.onCompleted()
+        responseObserver.onNext(responseBuilder.build())
+        responseObserver.onCompleted()
     }
 
-//    override fun getWorkflow(request: WorkflowOuterClass.WorkflowRequest?, responseObserver: StreamObserver<WorkflowOuterClass.WorkflowResponse>?) {
-//        val responseBuilder = WorkflowOuterClass.WorkflowResponse.newBuilder()
-//        val workflow = workflowRepository.findById(request.id)
-//        responseBuilder.setWorkflow(
-//                WorkflowOuterClass.Workflow
-//                        .newBuilder()
-//                        .setvi
-//        )
-//    }
+    override fun getWorkflow(request: WorkflowOuterClass.WorkflowRequest?, responseObserver: StreamObserver<WorkflowOuterClass.WorkflowResponse>) {
+        val responseBuilder = WorkflowOuterClass.WorkflowResponse.newBuilder()
+        // Why you .let here?!
+        val workflow = request?.id?.let { workflowRepository.findById(it).orElseThrow { Exception("Not found") } }
+        responseBuilder.workflow = workflow!!.id?.let {
+            WorkflowOuterClass.Workflow
+                    .newBuilder()
+                    .setId(it)
+                    .setViewId(workflow.viewId)
+                    .setFolder(workflow.folder)
+                    .setName(workflow.name)
+                    .build()
+        }
+
+        responseObserver.onNext(responseBuilder.build())
+        responseObserver.onCompleted()
+    }
 }

@@ -48,4 +48,26 @@ class WorkflowServiceTest {
         Assertions.assertThat(firstWorkflow.folder).isEqualTo(firstWorkflowDB.folder)
         Assertions.assertThat(firstWorkflow.name).isEqualTo(firstWorkflowDB.name)
     }
+
+    @Test
+    fun getsWorkFlow() {
+        val channel = ManagedChannelBuilder
+                .forAddress("localhost", gRpcServerProperties.runningPort)
+                .usePlaintext()
+                .build()
+        val stub = WorkflowServiceGrpc.newBlockingStub(channel)
+        val firstWorkflowDB = workflowRepository.findAll().first()
+        val request = firstWorkflowDB.id?.let {
+            WorkflowOuterClass.WorkflowRequest
+                    .newBuilder()
+                    .setId(it)
+                    .build()
+        }
+        val response = stub.getWorkflow(request).workflow
+        Assertions.assertThat(response.id).isEqualTo(firstWorkflowDB.id)
+        Assertions.assertThat(response.viewId).isEqualTo(firstWorkflowDB.viewId)
+        Assertions.assertThat(response.folder).isEqualTo(firstWorkflowDB.folder)
+        Assertions.assertThat(response.name).isEqualTo(firstWorkflowDB.name)
+
+    }
 }

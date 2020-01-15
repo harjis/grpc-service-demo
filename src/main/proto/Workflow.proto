@@ -1,6 +1,7 @@
 syntax = "proto3";
 
-option java_package = "com.example.grpcservicedemo.grpc";
+package workflow;
+option java_package = "fi.relex.processor2.fastorm.cluster.rpc.workflow.stubs";
 
 service WorkflowService {
     rpc GetWorkflows (WorkflowsRequest) returns (WorkflowsResponse);

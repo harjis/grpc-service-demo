@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package view;
+
+option java_package = "fi.relex.processor2.fastorm.cluster.rpc.view.stubs";
+
+service ViewService {
+    rpc GetViews (ViewsRequest) returns (ViewsResponse);
+
+    rpc ExportView (ExportViewRequest) returns (ExportViewResponse);
+}
+
+message View {
+    uint64 viewId = 1;
+    string folder = 2;
+    string name = 3;
+}
+
+message ViewsRequest {
+
+}
+
+message ViewsResponse {
+    repeated View views = 1;
+}
+
+message ExportViewRequest {
+    uint64 viewId = 1;
+}
+
+message ExportViewResponse {
+    string storageKey = 1;
+}

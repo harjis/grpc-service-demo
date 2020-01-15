@@ -25,7 +25,7 @@ class WorkflowServiceTest {
                 .build()
         val stub = WorkflowServiceGrpc.newBlockingStub(channel)
         val request = WorkflowOuterClass.WorkflowsRequest.newBuilder().build()
-        val response = stub.getWorkflows(request).workflowList
+        val response = stub.getWorkflows(request).workflowsList
 
         Assertions.assertThat(response.size).isEqualTo(5)
     }
@@ -38,13 +38,12 @@ class WorkflowServiceTest {
                 .build()
         val stub = WorkflowServiceGrpc.newFutureStub(channel)
         val request = WorkflowOuterClass.WorkflowsRequest.newBuilder().build()
-        val response = stub.getWorkflows(request).get().workflowList
+        val response = stub.getWorkflows(request).get().workflowsList
         val firstWorkflow = response.first()
         val firstWorkflowDB = workflowRepository.findAll().first()
 
         Assertions.assertThat(response.size).isEqualTo(5)
-        Assertions.assertThat(firstWorkflow.id).isEqualTo(firstWorkflowDB.id)
-        Assertions.assertThat(firstWorkflow.viewId).isEqualTo(firstWorkflowDB.viewId)
+        Assertions.assertThat(firstWorkflow.workflowId).isEqualTo(firstWorkflowDB.workflowId)
         Assertions.assertThat(firstWorkflow.folder).isEqualTo(firstWorkflowDB.folder)
         Assertions.assertThat(firstWorkflow.name).isEqualTo(firstWorkflowDB.name)
     }
@@ -64,8 +63,7 @@ class WorkflowServiceTest {
                     .build()
         }
         val response = stub.getWorkflow(request).workflow
-        Assertions.assertThat(response.id).isEqualTo(firstWorkflowDB.id)
-        Assertions.assertThat(response.viewId).isEqualTo(firstWorkflowDB.viewId)
+        Assertions.assertThat(response.workflowId).isEqualTo(firstWorkflowDB.workflowId)
         Assertions.assertThat(response.folder).isEqualTo(firstWorkflowDB.folder)
         Assertions.assertThat(response.name).isEqualTo(firstWorkflowDB.name)
 

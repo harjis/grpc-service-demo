@@ -14,20 +14,19 @@ class WorkflowService(
 ) : WorkflowServiceGrpc.WorkflowServiceImplBase() {
     override fun getWorkflows(request: WorkflowOuterClass.WorkflowsRequest?, responseObserver: StreamObserver<WorkflowOuterClass.WorkflowsResponse>) {
         val responseBuilder = WorkflowOuterClass.WorkflowsResponse.newBuilder()
-        responseBuilder.addAllWorkflow(workflowRepository.findAll().map { workflow ->
+        responseBuilder.addAllWorkflows(workflowRepository.findAll().map { workflow ->
             // TODO I don't get why I need .let here
             workflow!!.id?.let {
                 WorkflowOuterClass.Workflow
                         .newBuilder()
-                        .setId(it)
-                        .setViewId(workflow.viewId)
+                        .setWorkflowId(workflow.workflowId)
                         .setFolder(workflow.folder)
                         .setName(workflow.name)
                         .build()
             }
         })
 
-        println("Serving getWorkflows with: ${responseBuilder.build().workflowList.map { it.name }}")
+        println("Serving getWorkflows with: ${responseBuilder.build().workflowsList.map { it.name }}")
         responseObserver.onNext(responseBuilder.build())
         responseObserver.onCompleted()
     }
@@ -39,8 +38,7 @@ class WorkflowService(
         responseBuilder.workflow = workflow!!.id?.let {
             WorkflowOuterClass.Workflow
                     .newBuilder()
-                    .setId(it)
-                    .setViewId(workflow.viewId)
+                    .setWorkflowId(workflow.workflowId)
                     .setFolder(workflow.folder)
                     .setName(workflow.name)
                     .build()

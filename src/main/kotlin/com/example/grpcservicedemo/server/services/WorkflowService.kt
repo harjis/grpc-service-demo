@@ -5,10 +5,8 @@ import fi.relex.processor2.fastorm.cluster.rpc.workflow.stubs.WorkflowOuterClass
 import fi.relex.processor2.fastorm.cluster.rpc.workflow.stubs.WorkflowServiceGrpc
 import io.grpc.stub.StreamObserver
 import org.lognet.springboot.grpc.GRpcService
-import org.springframework.transaction.annotation.Transactional
 
 @GRpcService
-@Transactional
 class WorkflowService(
         private val workflowRepository: WorkflowRepository
 ) : WorkflowServiceGrpc.WorkflowServiceImplBase() {

@@ -36,8 +36,8 @@ class Seeds {
         countryRepository.save(country4)
         countryRepository.save(country5)
 
-        val workflow1 = Workflow(workflowId = 1, folder = "Folder", name = "Campaigns")
-        val workflow2 = Workflow(workflowId = 2, folder = "Folder", name = "Chain")
+        val workflow1 = Workflow(workflowId = 1, folder = "Folder", name = "Test 1")
+        val workflow2 = Workflow(workflowId = 2, folder = "Folder", name = "Test 2")
         val workflow3 = Workflow(workflowId = 3, folder = "Folder", name = "Something else")
         val workflow4 = Workflow(workflowId = 4, folder = "Folder", name = "Workflow 4")
         val workflow5 = Workflow(workflowId = 5, folder = "Folder", name = "Workflow 5")
@@ -47,8 +47,8 @@ class Seeds {
         workflowRepository.save(workflow4)
         workflowRepository.save(workflow5)
 
-        val view1 = View(viewId = 1, folder = "Folder", name = "Test 1")
-        val view2 = View(viewId = 2, folder = "Folder", name = "Test 2")
+        val view1 = View(viewId = 1, folder = "Folder", name = "Campaigns")
+        val view2 = View(viewId = 2, folder = "Folder", name = "Chains")
         viewRepository.save(view1)
         viewRepository.save(view2)
     }
